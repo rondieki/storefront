@@ -29,7 +29,11 @@ STRIPE_SECRET_KEY = 'sk_test_51OxC8A03R5ykTtcCtg47DdGj4SxU9Sw3CaA3G2fqDC2bve0eUY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '2d84-102-213-93-18.ngrok-free.app',  # Add the ngrok hostname
+    'localhost',  # Add localhost if needed
+    '127.0.0.1',  # Add localhost IP if needed
+]
 
 
 # Application definition
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_admin_filter',
+    'django_daraja',
     
 ]
 
@@ -90,6 +95,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'kartngo1', 
+#         'USER': 'postgres',   
+#         'PASSWORD': 'welcome', 
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }
+# }
 
 
 # Password validation
@@ -142,3 +158,23 @@ AUTH_USER_MODEL = 'auth.User'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# settings.py
+
+
+MPESA_ENVIRONMENT = "sandbox"
+
+# Define M-Pesa API credentials
+MPESA_CONSUMER_KEY = "xQi1gu8epF5bswPN2xJDjJ70XVUo535aGAvBWOs2YZmLo9GI"
+MPESA_CONSUMER_SECRET = "YW4xa8SSNcPw3opytA5GG6LK3CGsipHPlhPGXvW6qEKIoxHM8iFlzugLldH8nKSm"
+MPESA_SHORTCODE = "174379"
+MPESA_EXPRESS_SHORTCODE = "174379"
+MPESA_SHORTCODE_TYPE = "YOUR_MPESA_SHORTCODE"
+MPESA_PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+
+# Define M-Pesa API URLs
+MPESA_OAUTH_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+MPESA_STK_PUSH_URL = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+
+MPESA_INITIATOR_USERNAME = "testapi"
+
+MPESA_INITIATOR_SECURITY_CREDENTIAL = "Safaricom999!*!"

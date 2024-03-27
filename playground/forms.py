@@ -32,3 +32,12 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'price', 'category', 'description', 'image']
+
+class CheckoutForm(forms.Form):
+    full_name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    address = forms.CharField(max_length=200)
+    city = forms.CharField(max_length=100)
+    phone = forms.CharField(max_length=15)
+    payment_method = forms.ChoiceField(choices= [('mpesa', 'Mpesa')])#[('stripe', 'Credit/Debit Card'), ('paypal', 'PayPal'), ('mpesa', 'Mpesa')])
+    note = forms.CharField(max_length=1000, required=False)

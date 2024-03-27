@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -15,11 +16,12 @@ from django.utils import timezone
 import pkg_resources
 import stripe
 from django.urls import reverse
+from django.db import connection
 
 
 # Create your views here.
 from .models import *
-from .forms import OrderForm, CreateUserForm, PaymentForm
+from .forms import OrderForm, CreateUserForm, PaymentForm, CheckoutForm
 from .filters import OrderFilter
 
 from .models import Product, Cart, Order, OrderLine
@@ -30,6 +32,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 from .forms import ProductForm
 
+from django_daraja.mpesa.core import MpesaClient
 
 def index(request):
     if request.method == 'POST':
@@ -42,7 +45,7 @@ def index(request):
     return render(request, 'index.html', {'form': form})
 
 
-@login_required(login_url='login')
+
 def payment(request):
     payment_form = PaymentForm(request.POST or None)
     if request.method == 'POST' and payment_form.is_valid():
@@ -95,18 +98,20 @@ def calculate_total_price(cart_items):
         total_price += item.price  # Assuming each item has a price attribute
     return total_price
 
+@login_required
 def cart(request):
     user = request.user
     cart, created = Cart.objects.get_or_create(user=user)
     products = cart.products.all()
 
-    # Calculate total price
-    total_price = sum(product.price for product in products)
+    # Calculate total price and total items
+    total_price = sum(item.price * item.quantity for item in products)
+    total_items = sum(item.quantity for item in products)
 
     context = {
         'products': products,
         'total_price': total_price,
-        'total_items': products.count(),  # Count total items in the cart
+        'total_items': total_items,  # Count total items in the cart
     }
 
     return render(request, 'cart.html', context)
@@ -118,20 +123,20 @@ def add_to_cart(request, product_id):
         cart, created = Cart.objects.get_or_create(user=user)
         
         # Check if the product is already in the cart
-        cart_product, cart_product_created = cart.products.through.objects.get_or_create(cart=cart, product=product)
-        
-        if hasattr(cart_product, 'quantity'):
-            # If the cart_product object has a 'quantity' attribute, increase the quantity
+        if product in cart.products.all():
+            # If the product is already in the cart, increase the quantity
+            cart_product = cart.products.get(pk=product_id)
             cart_product.quantity += 1
             cart_product.save()
         else:
-            # If the cart_product object doesn't have a 'quantity' attribute, add it with quantity 1
+            # If the product is not in the cart, add it with quantity 1
             cart.products.add(product, through_defaults={'quantity': 1})
         
-        return redirect('cart')  # Assuming you have a URL named 'cart' for the cart page
+        return redirect('cart')  # Redirect to the cart page
     else:
         # Handle case where user is not authenticated
         return redirect('login')  # Redirect user to login page or show a message
+
 
 def view_cart(request):
     user = request.user
@@ -205,7 +210,7 @@ def home(request):
 
 	return render(request, 'index.html', context)
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def products(request):
 	products = Product.objects.all()
 
@@ -213,18 +218,17 @@ def products(request):
 
 @login_required(login_url='login')
 def customer(request, pk_test):
-    customer = Customer.objects.get(id=pk_test)
+	customer = Customer.objects.get(id=pk_test)
 
-    orders = customer.order_set.all()
-    order_count = orders.count()
+	orders = customer.order_set.all()
+	order_count = orders.count()
 
-    myFilter = OrderFilter(request.GET, queryset=orders)
-    orders = myFilter.qs 
+	myFilter = OrderFilter(request.GET, queryset=orders)
+	orders = myFilter.qs 
 
-    context = {'customer':customer, 'orders':orders, 'order_count':order_count,
-    'myFilter':myFilter}
-    return render(request, 'customer.html',context)
-
+	context = {'customer':customer, 'orders':orders, 'order_count':order_count,
+	'myFilter':myFilter}
+	return render(request, 'customer.html',context)
 
 @login_required(login_url='login')
 def update_customer(request, pk):
@@ -291,39 +295,78 @@ def remove_from_cart(request, product_id):
 
 @login_required
 def checkout(request):
+    user = request.user
+    cart, created = Cart.objects.get_or_create(user=user)
+
+    # Fetch cart items along with product details using a raw SQL query
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT p.name, c.quantity, p.price, cp.product_id
+            FROM playground_cart_products AS cp
+            INNER JOIN playground_product AS p ON cp.product_id = p.id
+            INNER JOIN playground_cart AS c ON cp.cart_id = c.id
+            WHERE cp.cart_id = %s
+        """, [cart.id])
+        cart_items = cursor.fetchall()
+
+    total_price = sum(item[2] * item[3] for item in cart_items)
+
+    print(cart_items)
     if request.method == 'POST':
-        user = request.user
-        cart, created = Cart.objects.get_or_create(user=user)
-        
-        # Fetch cart items
-        cart_items = cart.products.all()
-        # print(cart_items)
-        # Calculate total price and total items
-        total_price = sum(item.price for item in cart_items)
-        # total_items = len(cart_items)
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            # Extract billing details from the form
+            phone_number = form.cleaned_data['phone']
+            
+            # Initiate STK push
+            cl = MpesaClient()
+            account_reference = 'reference'
+            transaction_desc = 'Description'
+            callback_url = 'https://2d84-102-213-93-18.ngrok-free.app/stk_push_callback'
+            response = cl.stk_push(phone_number, int(total_price), account_reference, transaction_desc, callback_url)
+          
+            # Assuming STK push was successful, proceed with order creation
+            if response.status_code == 200:
+                # Create the order
+                order = Order.objects.create(
+                    user=user,
+                    total_price=total_price,
+                    payment_status='Pending',
+                    status='pending',  # Assuming the initial status is 'Pending'
+                    note=form.cleaned_data.get('note', '')  # Use get() to avoid KeyError
+                )
 
-        # Create order
-        order = Order.objects.create(
-            user=user,
-            total_price=total_price,
-            # total_items=total_items,
-            payment_status='Pending',
-            status='New',
-            note=None,
-        )
+                # Move cart items to order lines
+                for item in cart_items:
+                    product = Product.objects.get(pk=item[3])  # Get the corresponding product
+                    OrderLine.objects.create(
+                        order=order,
+                        product=product,  # Product name from cart_items
+                        quantity=item[1],       # Quantity from cart_items
+                        price=item[2] * item[1]  # Price per quantity from cart_items
+                    )
 
-        # Move cart items to order lines
-        for item in cart_items:
-            OrderLine.objects.create(
-                order=order,
-                product=item.name,
-                # quantity=item.quantity,  # Assuming each product has a quantity of 1 in the cart
-                price=item.price  # Assuming each product has a 'price' field
-            )
+                # Empty the cart
+                cart.products.clear()
 
-        # Clear the cart
-        cart.products.clear()
+                # Redirect to a success page or payment gateway
+                return redirect('success_page')
+            else:
+                # Handle STK push failure (e.g., display error message)
+                return HttpResponse('STK push failed, please try again')
 
-        return redirect('payment')  # Redirect to order confirmation page
     else:
-        return HttpResponseNotAllowed(['POST'])
+        form = CheckoutForm()
+
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'form': form
+    }
+
+    return render(request, 'checkout.html', context)
+
+def stk_push_callback(request):
+        data = request.body
+        
+        return HttpResponse("STK Push in Django👋")

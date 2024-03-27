@@ -40,7 +40,7 @@
                     <h5>Total Price: <span class="total-price">Ksh{{ total_price }}</span></h5>
                 </div>
                 <div class="col-lg-6 text-lg-end">
-                    <form method="post" action="{% url 'payment' %}">
+                    <form method="post" action="{% url 'checkout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Process Checkout</button>
                     </form>                    

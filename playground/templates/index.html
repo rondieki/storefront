@@ -1,4 +1,72 @@
 {% load static %}
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav ul li.active a {
+  font-weight: bold;
+}
+
+.shape {
+  background-image: url('one.png');
+  background-size: cover;
+  color: #fff;
+  text-align: center;
+  padding: 100px 0;
+}
+
+.products {
+  padding: 20px;
+}
+
+.product {
+  display: inline-block;
+  margin: 10px;
+  text-align: center;
+}
+
+.product img {
+  max-width: 100%;
+  height: auto;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,74 +74,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KART&GO</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> <!-- You can link your CSS file here -->
-    <style>
-      /* Add this CSS for header and footer background color */
-      header {
-        background-color: purple; /* Purple color */
-        border-top: 1px solid #ccc; 
-        padding: 20px;
-      }
-      footer {
-        background-color: blueviolet; /* Purple color */
-        text-align: center; /* Center align the content in the footer */
-        padding: 20px; /* Add padding to the footer */
-        border-top: 1px solid #ccc; 
-      }
-      nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            text-align: center; /* Center align the navigation links */
-        }
-
-        nav ul li {
-            display: inline; /* Display the list items horizontally */
-            margin-right: 10px; /* Adjust spacing between list items */
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 25px;
-        }
-      .slideshow-container {
-        max-width: 1000px; /* Adjusted width */
-        height: 1050px;
-        position: relative;
-        margin: auto;
-        overflow: hidden; /* Ensures images don't overflow */
-      }
-      .mySlides img {
-        width: 100%; /* Ensures images fill the slideshow container */
-        height: auto; /* Maintains aspect ratio */
-      }
-      .mySlides {
-        display: none;
-      }
-      .prev, .next {
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        width: auto;
-        padding: 16px;
-        margin-top: -22px;
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        transition: 0.6s ease;
-        border-radius: 0 3px 3px 0;
-      }
-      .next {
-        right: 0;
-        border-radius: 3px 0 0 3px;
-      }
-      .prev:hover, .next:hover {
-        background-color: rgba(0,0,0,0.8);
-      }
-    </style>
 </head>
 <body>
-    <header style="color: blueviolet; padding: 20px; text-align: center;">
+    <header>
         <h1 style="color:purple; text-align:center;">WELCOME TO KART&GO</h1>
         <nav>
           <ul>
@@ -86,69 +89,155 @@
           </ul>
       </nav>      
     </header>
+
     <section class="about">
-      <h2 style="text-align:center;">Find Everything You Need</h2>
-      <p style="text-align:center;">Shop for electronics, fashion, home & kitchen appliances, and more.</p>
-      <img src="{% static 'images/one.png' %}" height="100" width="100" style="display: block; margin: 0 auto;">
+        <h2 style="text-align:center;">Find Everything You Need</h2>
+        <p style="text-align:center;">Shop for electronics, fashion, home & kitchen appliances, and more.</p>
+        <img src="{% static 'images/one.png' %}" height="100" width="100" style="display: block; margin: 0 auto;">
+    
   </section>
-
-    <div class="slideshow-container">
-        <div class="mySlides">
-          <img src="{% static 'images/coat.jpg' %}" alt="Product">
-          <div class="text">Beige Trench coat</div>
-        </div>
-        
-        <div class="mySlides">
-         <img src="{% static 'images/cargo.jpg' %}" alt="Product" width="600" height="500">
-        </div>
-        
-        <div class="mySlides">
-          <img src="{% static 'images/heel.jpg' %}" alt="Product" width="200" height="200">
-        </div>
-
-         <div class="mySlides">
-          <img src="{% static 'images/air.jpg' %}" alt="Product" width="600" height="400">
-        </div>
-
-         <div class="mySlides">
-          <img src="{% static 'images/sandal.jpg' %}" alt="Product" width="600" height="400">
-        </div>
-
-         <div class="mySlides">
-          <img src="{% static 'images/laptop.jpg' %}" alt="Product" width="200" height="200">
-        </div>
-
-        <div class="mySlides">
-          <img src="{% static 'images/nike.jpg' %}" alt="Product" width="600" height="400">
-        </div>
-        
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    <section class="products">
+        <h2>These are some of the Featured Products find more on the  products page for order</h2>
+        <h1 style="color:purple; text-align:center;">Women's Fashion</h1>
+        <div class="product">
+          <img src="{% static 'images/bodycon.jpg' %}" alt="Product" width="250" height="250">
+          <h3>A cotton polyester blend elegant for the perfect occassion</h3>
+          <p>Ksh2500.00</p>
+      </div>
+      <div class="product">
+        <img src="{% static 'images/cargo.jpg' %}" alt="Product" width="250" height="250">
+        <h3>Womens black cargo pants</h3>
+        <p>Ksh1800.00</p>
     </div>
-    
-    <script src="{% static 'js/script.js' %}"></script>
-    <script>
-    var slideIndex = 0;
-    showSlides();
-
-    function showSlides() {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        slideIndex++;
-        if (slideIndex > slides.length) {slideIndex = 1}
-        slides[slideIndex-1].style.display = "block";
-        setTimeout(showSlides, 5000); // Change slide every 2 seconds (2000 milliseconds)
-    }
-</script>
-
-
+    <div class="product">
+      <img src="{% static 'images/neck.jpg' %}" alt="Product" width="250" height="250">
+      <h3>women neckless stainless steel multilayer lover</h3>
+      <p>Ksh5000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=4 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/ear.jpg' %}" alt="Product" width="200" height="200">
+      <h3>Ear piercing jewelry for the ladies</h3>
+      <p>Ksh5000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=6 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <h1 style="color:red; text-align:center;">Shoes</h1>
+    <div class="product">
+      <img src="{% static 'images/heel.jpg' %}" alt="Product" width="250" height="250">
+      <h3>High heels Pump Sandals</h3>
+      <p>Ksh3000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=7 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/nike.jpg' %}" alt="Product" width="200" height="200">
+      <h3>Jordan shoe for the girl</h3>
+      <p>Ksh3500.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=9 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/flat.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Sport shoes white running Sneakers</h3>
+      <p>Ksh2500.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=10 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/low.jpg' %}" alt="Product" width="250" height="250">
+      <h3>low top Breatable men</h3>
+      <p>Ksh4000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=12 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/glitter.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Glitter male foorwears</h3>
+      <p>Ksh5000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=14 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <h1 style="color:red; text-align:center;">Home Appliances</h1>
+    <div class="product">
+      <img src="{% static 'images/micro.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Rose gold microwave</h3>
+      <p>Ksh30000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=16 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/blend.jpg' %}" alt="blender" width="250" height="250">
+      <h3>Nutri ninja blender</h3>
+      <p>Ksh15000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=17 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/kettle.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Stainless steel electric kettle</h3>
+      <p>Ksh7000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=21 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <h1 style="color:red; text-align:center;">Electronics</h1>
+    <div class="product">
+      <img src="{% static 'images/watch.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Brand sports Electronic watch for women</h3>
+      <p>Ksh10000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=24%}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <div class="product">
+      <img src="{% static 'images/phone.jpg' %}" alt="Product" width="250" height="250">
+      <h3>I-phone</h3>
+      <p>Ksh70000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=27 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    <h1 style="color:red; text-align:center;">Furniture</h1>
+    <div class="product">
+      <img src="{% static 'images/sofa.jpg' %}" alt="Product" width="250" height="250">
+      <h3>Grey sofa</h3>
+      <p>Ksh40000.00</p>
+      <form method="post" action="{% url 'add_to_cart' product_id=30 %}">
+          {% csrf_token %}
+          <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    </section>
     <footer>
-        <p>&copy; 2024 KART&GO, Nairobi, Kenya</p>
-    </footer>
+      <p>&copy; 2024 KART&GO, Nairobi,Kenya</p>
+  </footer>
 
-    
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+  
+</script>
 </body>
 </html>

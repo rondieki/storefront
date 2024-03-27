@@ -25,4 +25,7 @@ urlpatterns = [
     path('update_order/<str:pk>/', views.updateOrder, name="update_order"),
     path('delete_order/<str:pk>/', views.deleteOrder, name="delete_order"),
 
+    # path('callback/', views.callback, name='callback'),
+    path('stk-push-callback/', views.stk_push_callback, name='stk_push_callback'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

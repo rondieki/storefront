@@ -41,11 +41,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     products = models.ManyToManyField('Product', related_name='carts', blank=True)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"Cart for {self.user.username}"
@@ -64,8 +63,8 @@ class Order(models.Model):
 	note = models.CharField(max_length=1000, null=True)
 	date_created = models.DateTimeField(auto_now_add=True, null=True)
 
-	def __str__(self):
-		return self.product.name
+	# def __str__(self):
+	# 	return self.product.name
 
 class OrderLine(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_lines')
