@@ -18,6 +18,11 @@ class PaymentForm(forms.Form):
     expiry_date = forms.CharField(label='Expiry Date', max_length=10)
     cvv = forms.CharField(label='CVV', max_length=10)
 
+class ContactForm(forms.Form):
+    name = forms.CharField(label='Your Name', max_length=100)
+    email = forms.EmailField(label='Your Email')
+    message = forms.CharField(label='Your Message', widget=forms.Textarea)
+
 class CreateUserForm(UserCreationForm):
 	class Meta:
 		model = User

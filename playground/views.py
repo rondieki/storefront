@@ -21,7 +21,7 @@ from django.db import connection
 
 # Create your views here.
 from .models import *
-from .forms import OrderForm, CreateUserForm, PaymentForm, CheckoutForm
+from .forms import OrderForm, CreateUserForm, PaymentForm, CheckoutForm, ContactForm
 from .filters import OrderFilter
 
 from .models import Product, Cart, Order, OrderLine
@@ -70,6 +70,18 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Process the form data
+            # For now, let's just print the form data
+            print(form.cleaned_data)
+            # You can add your logic here to save the data to the database or send an email
+    else:
+        form = ContactForm()
+    return render(request, 'contact_us.html', {'form': form})
 
 def home(request):
     categories = {
