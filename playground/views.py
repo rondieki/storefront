@@ -116,7 +116,10 @@ def calculate_total_price(cart_items):
 
 @login_required
 def cart(request):
+    # Get current user
     user = request.user
+
+    # Get or create cart for the user
     cart, created = Cart.objects.get_or_create(user=user)
     products = cart.products.all()
 
@@ -124,10 +127,18 @@ def cart(request):
     total_price = sum(item.price * item.quantity for item in products)
     total_items = sum(item.quantity for item in products)
 
+    # Calculate total orders, delivered orders, and pending orders
+    total_orders = Order.objects.all().count()
+    delivered = Order.objects.filter(status='Delivered').count()
+    pending = Order.objects.filter(status='Pending').count()
+
     context = {
         'products': products,
         'total_price': total_price,
-        'total_items': total_items,  # Count total items in the cart
+        'total_items': total_items,
+        'total_orders': total_orders,
+        'delivered': delivered,
+        'pending': pending,
     }
 
     return render(request, 'cart.html', context)
