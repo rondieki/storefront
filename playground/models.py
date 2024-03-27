@@ -64,8 +64,8 @@ class Order(models.Model):
 	note = models.CharField(max_length=1000, null=True)
 	date_created = models.DateTimeField(auto_now_add=True, null=True)
 
-	def __str__(self):
-		return self.product.name
+	# def __str__(self):
+	# 	return self.product.name
 
 class OrderLine(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_lines')

@@ -121,19 +121,30 @@ def cart(request):
 
     # Get or create cart for the user
     cart, created = Cart.objects.get_or_create(user=user)
-    products = cart.products.all()
 
+    # Fetch cart items along with their quantities using a raw SQL query
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT p.name, cp.quantity, p.price, cp.product_id, p.image
+            FROM playground_cart_products AS cp
+            INNER JOIN playground_product AS p ON cp.product_id = p.id
+            WHERE cp.cart_id = %s
+        """, [cart.id])
+        cart_items = cursor.fetchall()
+    
     # Calculate total price and total items
-    total_price = sum(item.price * item.quantity for item in products)
-    total_items = sum(item.quantity for item in products)
+    total_price = sum(item[2] * item[1] for item in cart_items)
+    total_items = sum(item[1] for item in cart_items)
 
     # Calculate total orders, delivered orders, and pending orders
-    total_orders = Order.objects.all().count()
-    delivered = Order.objects.filter(status='Delivered').count()
-    pending = Order.objects.filter(status='Pending').count()
+    total_orders = Order.objects.filter(user=user).count()
+    
+    # Calculate delivered and pending orders
+    delivered = Order.objects.filter(user=user, status='delivered').count()
+    pending = Order.objects.filter(user=user, status='pending').count()
 
     context = {
-        'products': products,
+        'cart_items': cart_items,
         'total_price': total_price,
         'total_items': total_items,
         'total_orders': total_orders,
@@ -148,22 +159,28 @@ def add_to_cart(request, product_id):
     if request.user.is_authenticated:
         user = request.user
         cart, created = Cart.objects.get_or_create(user=user)
-        
+
         # Check if the product is already in the cart
         if product in cart.products.all():
-            # If the product is already in the cart, increase the quantity
-            cart_product = cart.products.get(pk=product_id)
-            cart_product.quantity += 1
-            cart_product.save()
+            # If the product is already in the cart, increment the quantity
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE playground_cart_products
+                    SET quantity = quantity + 1
+                    WHERE cart_id = %s AND product_id = %s
+                """, [cart.id, product_id])
         else:
             # If the product is not in the cart, add it with quantity 1
-            cart.products.add(product, through_defaults={'quantity': 1})
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO playground_cart_products (cart_id, product_id, quantity)
+                    VALUES (%s, %s, 1)
+                """, [cart.id, product_id])
         
         return redirect('cart')  # Redirect to the cart page
     else:
         # Handle case where user is not authenticated
         return redirect('login')  # Redirect user to login page or show a message
-
 
 def view_cart(request):
     user = request.user
@@ -328,7 +345,7 @@ def checkout(request):
     # Fetch cart items along with product details using a raw SQL query
     with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT p.name, c.quantity, p.price, cp.product_id
+            SELECT p.name, cp.quantity, p.price, cp.product_id
             FROM playground_cart_products AS cp
             INNER JOIN playground_product AS p ON cp.product_id = p.id
             INNER JOIN playground_cart AS c ON cp.cart_id = c.id
@@ -336,7 +353,7 @@ def checkout(request):
         """, [cart.id])
         cart_items = cursor.fetchall()
 
-    total_price = sum(item[2] * item[3] for item in cart_items)
+    total_price = sum(item[2] * item[1] for item in cart_items)
 
     print(cart_items)
     if request.method == 'POST':
