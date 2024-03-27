@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KART&GO</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> <!-- You can link your CSS file here -->
+    <style>
+      /* Add this CSS for header and footer background color */
+      header {
+        background-color: purple; /* Purple color */
+        border-top: 1px solid #ccc; 
+        padding: 20px;
+      }
+      footer {
+        background-color: blueviolet; /* Purple color */
+        text-align: center; /* Center align the content in the footer */
+        padding: 20px; /* Add padding to the footer */
+        border-top: 1px solid #ccc; 
+      }
+      nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center align the navigation links */
+        }
+
+        nav ul li {
+            display: inline; /* Display the list items horizontally */
+            margin-right: 10px; /* Adjust spacing between list items */
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 25px;
+        }
+      .slideshow-container {
+        max-width: 1000px; /* Adjusted width */
+        height: 1050px;
+        position: relative;
+        margin: auto;
+        overflow: hidden; /* Ensures images don't overflow */
+      }
+      .mySlides img {
+        width: 100%; /* Ensures images fill the slideshow container */
+        height: auto; /* Maintains aspect ratio */
+      }
+      .mySlides {
+        display: none;
+      }
+      .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+      }
+      .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+      }
+      .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.8);
+      }
+    </style>
+</head>
+<body>
+    <header style="color: blueviolet; padding: 20px; text-align: center;">
+        <h1 style="color:purple; text-align:center;">WELCOME TO KART&GO</h1>
+        <nav>
+          <ul>
+              <li><a href="{% url 'home' %}">Home</a></li>
+              <li><a href="{% url 'products' %}">Products</a></li>
+              <li><a href="{% url 'cart' %}">Cart</a></li>
+              <li><a href="{% url 'login' %}">Login</a></li>
+              <li><a href="{% url 'register' %}">Register</a></li>
+              <li><a href="{% url 'about' %}">About Us</a></li>
+          </ul>
+      </nav>      
+    </header>
+    <section class="about">
+      <h2 style="text-align:center;">Find Everything You Need</h2>
+      <p style="text-align:center;">Shop for electronics, fashion, home & kitchen appliances, and more.</p>
+      <img src="{% static 'images/one.png' %}" height="100" width="100" style="display: block; margin: 0 auto;">
+  </section>
+
+    <div class="slideshow-container">
+        <div class="mySlides">
+          <img src="{% static 'images/coat.jpg' %}" alt="Product">
+          <div class="text">Beige Trench coat</div>
+        </div>
+        
+        <div class="mySlides">
+         <img src="{% static 'images/cargo.jpg' %}" alt="Product" width="600" height="500">
+        </div>
+        
+        <div class="mySlides">
+          <img src="{% static 'images/heel.jpg' %}" alt="Product" width="200" height="200">
+        </div>
+
+         <div class="mySlides">
+          <img src="{% static 'images/air.jpg' %}" alt="Product" width="600" height="400">
+        </div>
+
+         <div class="mySlides">
+          <img src="{% static 'images/sandal.jpg' %}" alt="Product" width="600" height="400">
+        </div>
+
+         <div class="mySlides">
+          <img src="{% static 'images/laptop.jpg' %}" alt="Product" width="200" height="200">
+        </div>
+
+        <div class="mySlides">
+          <img src="{% static 'images/nike.jpg' %}" alt="Product" width="600" height="400">
+        </div>
+        
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 5000); // Change slide every 2 seconds (2000 milliseconds)
+    }
+</script>
+
+
+    <footer>
+        <p>&copy; 2024 KART&GO, Nairobi, Kenya</p>
+    </footer>
+
+    
+</body>
+</html>

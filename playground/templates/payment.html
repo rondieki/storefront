@@ -1,0 +1,96 @@
+<head>
+  <style>
+    /* CSS styles for form elements */
+    body {
+      background-color: #f2f2f2; 
+      font-family: Arial, sans-serif; /* Set a fallback font family */
+    }
+
+    #payment-form {
+      width: 300px; /* Adjust the width as needed */
+      margin: 0 auto; /* Center the form horizontally */
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff; /* Set background color to white */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+    }
+
+    /* Style for form input fields */
+    #payment-form input[type="text"],
+    #payment-form input[type="email"],
+    #payment-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 14px; /* Set font size */
+    }
+
+    /* Style for form submit button */
+    #payment-form button[type="submit"] {
+      background-color: #4CAF50; /* Green */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 16px; /* Increase font size */
+      transition: background-color 0.3s; /* Add transition effect */
+    }
+
+    /* Hover effect for submit button */
+    #payment-form button[type="submit"]:hover {
+      background-color: #45a049; /* Darker green */
+    }
+  </style>
+</head>  
+<!-- process_payment.html -->
+<form id="payment-form" method="post">
+  {% csrf_token %}
+  {{ payment_form.as_p }}
+
+  <button type="submit">Submit Payment</button>
+</form>
+
+<script>
+  // Get the form element
+  const form = document.getElementById('payment-form');
+
+  // Add event listener for form submission
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the URL to submit the form to
+    const submitUrl = 'index.html'; // Replace this with the URL you want to submit to
+
+    // Perform any additional validation or processing here
+
+    // Submit the form to the specified URL
+    submitForm(submitUrl);
+  });
+
+  // Function to submit the form to a specified URL
+  function submitForm(url) {
+    // Create a new form data object
+    const formData = new FormData(form);
+
+    // Send a POST request to the specified URL with the form data
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      // Handle the response as needed
+      console.log('Form submitted successfully');
+      // Optionally, redirect to another page after successful form submission
+      window.location.href = '/success_page/'; // Replace '/success_page/' with your desired URL
+    })
+    .catch(error => {
+      // Handle any errors that occur during form submission
+      console.error('Error submitting form:', error);
+    });
+  }
+</script>

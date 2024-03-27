@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <br>
+
+    <div class="row row-cols-1 row-cols-md-3"> <!-- Set the number of columns per row -->
+        {% for product in products %}
+        <div class="col mb-4">
+            <div class="card">
+                <div class="card-body text-center"> <!-- Add text-center class to center-align content -->
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; max-height: 200px;">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Price: {{ product.price }}</p>
+                    <form method="post" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>                                     
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
