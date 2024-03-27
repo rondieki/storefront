@@ -24,7 +24,7 @@ from .models import *
 from .forms import OrderForm, CreateUserForm, PaymentForm, CheckoutForm, ContactForm
 from .filters import OrderFilter
 
-from .models import Product, Cart, Order, OrderLine
+from .models import Product, Cart, Order, OrderLine, Customer
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
