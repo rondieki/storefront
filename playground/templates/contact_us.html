@@ -79,15 +79,11 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("contactForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
         
-        // Construct the URL dynamically using Django's template tag
-        var thank_you = "{% url 'thank_you' %}";
-
         // Redirect to the thank you page
-        window.location.href = thank_you;
+        window.location.href = "thank_you.html";
     });
 });
 </script>
-
 
 </body>
 </html>
