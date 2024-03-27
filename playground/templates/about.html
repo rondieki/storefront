@@ -7,9 +7,42 @@
     <title>About Us - KART&GO</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
+<style>
+header {
+    background-color: blueviolet;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  header h1 {
+    color: #fff; /* Set text color to white */
+  }
+  
+  nav ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+  }
+  
+  nav ul li a:hover {
+    background-color: #fff; /* Change background color on hover */
+    color: purple; /* Change text color on hover */
+  }
+</style>
 <body>
     <header>
-        <h1 style="color: purple;">Welcome to our KART&GO intermediary system</h1>
+        <h1 style="color: white;">ABOUT OUR SYSTEM</h1>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">Dashboard</a></li>
@@ -17,8 +50,7 @@
         </nav>
     </header>
     <img src="{% static 'images/about.jpg' %}" alt="Product" width="500" height="300" style="display: block; margin: 0 auto;">
-        <section id="about" style="background-color: lightgreen">
-            <h3>ABOUT OUR SYSTEM</h3>
+        <section id="about">
             <p>Founded in 2023/2024, we have been committed to providing an unparalleled shopping experience to our customers. </p>
             <p>Here, we believe in the power of technology to transform the way people shop. Our platform brings together a vast selection of products from leading brands, independent sellers, and artisans, all in one convenient place. 
             From fashion and electronics to home goods and beyond, we strive to offer something for everyone.</p>
@@ -26,7 +58,7 @@
             <p>Our secure payment system gives you peace of mind, while our fast and reliable delivery options ensure that your purchases reach you in no time.</p>
             <p>But we're more than just a shopping platform – we're a community. Whether you're a seasoned shopper or new to online shopping, our team is here to assist you every step of the way.</p>
             <p>Have a question about a product? Need help with an order? Our customer support team is available around the clock to provide you with personalized assistance.</p>
-            <p>As we continue to grow and expand our offerings, our commitment to excellence remains unwavering. Thank you for choosing [Company Name] for all your online shopping needs. 
+            <p>As we continue to grow and expand our offerings, our commitment to excellence remains unwavering. Thank you for choosing us for all your online shopping needs. 
             We look forward to serving you and exceeding your expectations.</p>
 
 
