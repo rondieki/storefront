@@ -71,6 +71,9 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
+def thank_you(request):
+    return render(request, 'thank_you.html')
+
 def contact_us(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
