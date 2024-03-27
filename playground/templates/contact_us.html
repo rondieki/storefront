@@ -1,12 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <style>
-    /* style.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -64,19 +66,26 @@ form button {
 
 </style>
 <body>
-    <h1>Contact Us</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
-<div class="message" id="message">Thank you for your message! We'll get back to you soon.</div>
-</div>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form method="post" id="contactForm">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+        <div class="message" id="message">Thank you for your message! We'll get back to you soon.</div>
+    </div>
 
-<script>
-function showMessage() {
-    document.getElementById("message").style.display = "block";
-}
+<script src="{% static 'js/script.js' %}">
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Redirect to the thank you page
+        window.location.href = "thank_you.html";
+    });
+});
+
 </script>
 </body>
 </html>
