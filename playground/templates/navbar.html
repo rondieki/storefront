@@ -1,6 +1,17 @@
 {% load static %}
-
+<head>
 <style>
+  header {
+  background-color: blue;
+  color: #fff;
+  padding: 20px;
+}
+  footer {
+  background-color: blueviolet;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
   .hello-msg{
     font-size: 18px;
     color: #fff;
@@ -13,6 +24,7 @@
     padding: 5px; /* Add some padding */
   }
 </style>
+</head>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="{% url 'home' %}">
