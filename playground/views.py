@@ -96,12 +96,13 @@ def home(request):
 
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
-    orders = Order.objects.filter(customer=customer)
-    # order_count = orders.count()
+    # orders = Order.objects.filter(customer=customer)
+    orders = customer.order_set.all()
+    order_count = orders.count()
     context = {
         'customer': customer,
         'orders': orders,
-        # 'order_count': order_count,
+        'order_count': order_count,
     }
     return render(request, 'customer.html', context)
 
