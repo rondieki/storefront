@@ -59,6 +59,9 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
+            display: inline-block; /* or float: left; */
+            margin-right: 20px;
+            box-sizing: border-box;
         }
 
         .product {
@@ -66,6 +69,8 @@
             text-align: center;
             flex: 0 0 calc(33.33% - 20px); /* Three products per row */
             max-width: calc(33.33% - 20px);
+            display: inline-block; /* or float: left; */
+            margin-right: 100px;
         }
 
         .product img {
@@ -105,7 +110,41 @@
 
     <section class="products">
         <h2>Featured Products</h2>
-        <!-- Your product cards go here -->
+        <div class="product">
+            <img src="{% static 'images/sofa.jpg' %}" alt="Product" width="250" height="250">
+            <h3>Grey sofa set</h3>
+            <p>Ksh60000.00</p>
+          </div>
+          <div class="product">
+            <img src="{% static 'images/neck.jpg' %}" alt="Product" width="250" height="250">
+            <h3>Neckless</h3>
+            <p>Ksh5000.00</p>
+          </div>
+          <div class="product">
+            <img src="{% static 'images/air.jpg' %}" alt="Product" width="250" height="250">
+            <h3>White airpods</h3>
+            <p>Ksh5000.00</p>
+          </div>
+          <div class="product">
+            <img src="{% static 'images/micro.jpg' %}" alt="Product" width="250" height="250">
+            <h3>Microwave</h3>
+            <p>Ksh30000.00</p>
+          </div>
+          <div class="product">
+            <img src="{% static 'images/flat.jpg' %}" alt="Product" width="250" height="250">
+            <h3>Sport shoes white running Sneakers</h3>
+            <p>Ksh2500.00</p>
+          </div>
+          <div class="product">
+            <img src="{% static 'images/heel.jpg' %}" alt="Product" width="250" height="250">
+            <h3>High heels Pump Sandals</h3>
+            <p>Ksh3000.00</p>
+          </div>
+      
+      
+      
+      
+  
     </section>
 
     <!-- Contact Us Section -->

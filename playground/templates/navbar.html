@@ -12,6 +12,9 @@ header h1 {
    margin: 0;
 }
 
+.bg-custom {
+        background-color: blueviolet; /* Set your custom background color */
+    }
 nav ul {
   list-style-type: none; /* Remove default bullet points */
   padding: 0;
@@ -29,8 +32,8 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  background-color: purple; /* Change background color on hover */
-  color: purple; /* Change text color on hover */
+  background-color: blueviolet; /* Change background color on hover */
+  color: blueviolet /* Change text color on hover */
 }
 
 .hello-msg{
@@ -54,7 +57,7 @@ footer {
 </style>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-custom">
   <a class="navbar-brand" href="{% url 'home' %}">
     <img src="{% static 'images/logo.jpg' %}" alt="Logo">
   </a>

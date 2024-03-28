@@ -1,9 +1,66 @@
 {% extends 'main.html' %}
 
-
 {% block content %}
 
     <br>
+   
+    <head>
+    <style>
+        header {
+            background-color: blueviolet;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+        nav {
+            background-color: blueviolet; /* Change navbar background color */
+        }
+
+        nav ul {
+            list-style-type: none; /* Remove default bullet points */
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: purple; /* Change background color on hover */
+            color: purple; /* Change text color on hover */
+        }
+
+        .hello-msg{
+            font-size: 18px;
+            color: white;
+            margin-right: 20px;
+        }
+
+        .navbar-brand img {
+            height: 45px; /* Adjust height as needed */
+            width: auto; /* Maintain aspect ratio */
+            padding: 5px; /* Add some padding */
+        }
+
+        footer {
+            background-color: blueviolet;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+    </head>
 
     <div class="row row-cols-1 row-cols-md-3"> <!-- Set the number of columns per row -->
         {% for product in products %}

@@ -20,7 +20,8 @@
                     
                     {% for product in cart_items %}
                     <tr>
-                        <td><img src="{{ product.4 }}" alt="{{ product.0 }}" style="max-width: 50px; max-height: 50px;"></td>
+                        <td><img src="{{ product.4.url }}" alt="{{ product.0 }}" style="max-width: 50px; max-height: 50px;"></td>
+                        <!-- <td>{{ product.4 }}</td> -->
                         <td>{{ product.0 }}</td>
                         <td>{{ product.1 }}</td>
                         <td>{{ product.2 }}</td>

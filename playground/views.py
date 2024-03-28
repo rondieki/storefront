@@ -131,6 +131,9 @@ def cart(request):
             WHERE cp.cart_id = %s
         """, [cart.id])
         cart_items = cursor.fetchall()
+
+    cart_products = cart.products.all()
+    print(cart_products)
     
     # Calculate total price and total items
     total_price = sum(item[2] * item[1] for item in cart_items)
@@ -144,7 +147,7 @@ def cart(request):
     pending = Order.objects.filter(user=user, status='pending').count()
 
     context = {
-        'cart_items': cart_items,
+         'cart_items': cart_items,
         'total_price': total_price,
         'total_items': total_items,
         'total_orders': total_orders,
@@ -262,17 +265,20 @@ def products(request):
 
 @login_required(login_url='login')
 def customer(request, pk_test):
-	customer = Customer.objects.get(id=pk_test)
-
-	orders = customer.order_set.all()
-	order_count = orders.count()
-
-	myFilter = OrderFilter(request.GET, queryset=orders)
-	orders = myFilter.qs 
-
-	context = {'customer':customer, 'orders':orders, 'order_count':order_count,
+    user = request.user	
+    customer = Customer.objects.get(id=pk_test)
+    orders = Order.objects.all()
+    
+    orders = orders.filter(user=user)
+    order_count = orders.count()
+    
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs 
+    
+    context = {'customer':customer, 'orders':orders, 'order_count':order_count,
 	'myFilter':myFilter}
-	return render(request, 'customer.html',context)
+    
+    return render(request, 'customer.html',context)
 
 @login_required(login_url='login')
 def update_customer(request, pk):

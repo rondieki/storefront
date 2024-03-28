@@ -5,7 +5,43 @@
 {% endblock %}
 
 {% block content %}
+<head>
+<style>
+header {
+    background-color: blueviolet;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  header h1 {
+    color: #fff; /* Set text color to white */
+  }
+  
+  nav ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+  }
+  
+  nav ul li a:hover {
+    background-color: #fff; /* Change background color on hover */
+    color: purple; /* Change text color on hover */
+  }
+</style>
+</head>
     <div class="container">
+    </br>
         <div class="row">
             <div class="col-md-6">
                 <h2>Order Summary</h2>
