@@ -15,6 +15,7 @@ from django.contrib.sessions.models import Session
 from django.utils import timezone
 import pkg_resources
 import stripe
+import csv
 from django.urls import reverse
 from django.db import connection
 
@@ -43,6 +44,19 @@ def index(request):
     else:
         form = ProductForm()
     return render(request, 'index.html', {'form': form})
+
+class DownloadUserReport(View):
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="user_report.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Customer ID', 'Name', 'Phone', 'Email', 'Date Created'])
+        customers = Customer.objects.all()
+        for customer in customers:
+            writer.writerow([customer.id, customer.name, customer.phone, customer.email, customer.date_created])
+
+        return response
 
 
 
