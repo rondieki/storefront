@@ -14,6 +14,7 @@ from django.views import View
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 import pkg_resources
+from requests import request
 import stripe
 import csv
 from django.urls import reverse
@@ -44,22 +45,6 @@ def index(request):
     else:
         form = ProductForm()
     return render(request, 'index.html', {'form': form})
-
-class DownloadUserReport(View):
-    def get(self, request):
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="user_report.csv"'
-
-        writer = csv.writer(response)
-        writer.writerow(['Customer ID', 'Name', 'Phone', 'Email', 'Date Created'])
-        customers = Customer.objects.all()
-        for customer in customers:
-            writer.writerow([customer.id, customer.name, customer.phone, customer.email, customer.date_created])
-
-        return response
-
-
-
 def payment(request):
     payment_form = PaymentForm(request.POST or None)
     if request.method == 'POST' and payment_form.is_valid():
@@ -110,16 +95,15 @@ def home(request):
 
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
-    orders = Order.objects.filter(customer=customer)
-    orders = customer.order_set.all()
+    orders = Order.objects.filter(user=request.user)  # Filter orders by the current user
     order_count = orders.count()
+
     context = {
         'customer': customer,
         'orders': orders,
         'order_count': order_count,
     }
     return render(request, 'customer.html', context)
-
 
 def calculate_total_price(cart_items):
     # Placeholder function to calculate total price
@@ -174,8 +158,8 @@ def cart(request):
 
     # Calculate total orders, delivered orders, and pending orders
     total_orders = Order.objects.all().count()
-    delivered = Order.objects.filter(status='Delivered').count()
-    pending = Order.objects.filter(status='Pending').count()
+    delivered = Order.objects.filter(status='delivered').count()
+    pending = Order.objects.filter(status='pending').count()
 
     # Render the template with the necessary context
     return render(request, 'cart.html', {
@@ -411,7 +395,7 @@ def checkout(request):
                 order = Order.objects.create(
                     user=user,
                     total_price=total_price,
-                    payment_status='Pending',
+                    payment_status='Paid',
                     status='pending',  # Assuming the initial status is 'Pending'
                     note=form.cleaned_data.get('note', '')  # Use get() to avoid KeyError
                 )
