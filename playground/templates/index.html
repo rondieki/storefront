@@ -28,7 +28,7 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
-            text-align: center;
+            text-align: left;
         }
 
         nav ul li {
@@ -39,6 +39,9 @@
         nav ul li a {
             color: #fff;
             text-decoration: none;
+        }
+        .logo-container {
+        text-align: right;
         }
 
         .about {
@@ -90,14 +93,14 @@
     <header>
         <h1>WELCOME TO KART&GO</h1>
         <nav>
+              
             <ul>
+                <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="50" height="50">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'products' %}">Products</a></li>
+                <li><a href="{% url 'products' %}">Shop</a></li>
                 <li><a href="{% url 'cart' %}">Cart</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
                 <li><a href="{% url 'about' %}">About Us</a></li>
-                <li><a href="{% url 'contact_us' %}">Contact us</a></li>
+                <li><a href="{% url 'thank_you' %}">Contact us</a></li>
             </ul>
         </nav>      
     </header>

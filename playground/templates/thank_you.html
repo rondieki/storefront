@@ -5,9 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thank You</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+<style>
+    body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Set font family */
+    background-color: #f9f9f9; /* Set background color */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+.container {
+    width: 80%; /* Set width of the container */
+    margin: 50px auto; /* Center the container horizontally */
+    background-color: #fff; /* Set background color of the container */
+    padding: 20px; /* Add padding */
+    border-radius: 10px; /* Add border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+h1 {
+    color: #333; /* Set heading color */
+    text-align: center; /* Center align the heading */
+}
+
+p {
+    color: #666; /* Set paragraph text color */
+    line-height: 1.6; /* Set line height */
+}
+
+a {
+    color: #007bff; /* Set link color */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make the link a block element */
+    text-align: center; /* Center align the link */
+    margin-top: 20px; /* Add top margin */
+}
+
+a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+</style>
 <body>
-    <h1>Thank You!</h1>
-    <p>We have received your message and will get back to you soon.</p>
+    <div class="container">
+        <h1>Thank You!</h1>
+        <p>We have received your message and will get back to you soon.</p>
+        <a href="/">Go to Homepage</a>
+    </div>
 </body>
 </html>
+

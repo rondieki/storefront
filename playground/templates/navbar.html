@@ -26,7 +26,7 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #fff;
+  color: blueviolet;
   text-decoration: none;
   padding: 10px;
 }
@@ -49,7 +49,7 @@ nav ul li a:hover {
 }
 
 footer {
-  background-color: blueviolet;
+  background-color: #7abecc;
   color: #fff;
   text-align: center;
   padding: 20px;
@@ -70,7 +70,13 @@ footer {
         <a class="nav-link" href="{% url 'home' %}">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'products' %}">Products</a>
+        <a class="nav-link" href="{% url 'products' %}">Shop</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'checkout' %}">Checkout</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'about' %}">About us</a>

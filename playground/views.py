@@ -80,7 +80,7 @@ def contact_us(request):
         if form.is_valid():
             # Process the form data
             # For now, let's just print the form data
-            print(form.cleaned_data)
+            return render(request, 'thank_you.html')
             # You can add your logic here to save the data to the database or send an email
     else:
         form = ContactForm()
@@ -96,7 +96,7 @@ def home(request):
 
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
-    # orders = Order.objects.filter(customer=customer)
+    orders = Order.objects.filter(customer=customer)
     orders = customer.order_set.all()
     order_count = orders.count()
     context = {
@@ -116,13 +116,11 @@ def calculate_total_price(cart_items):
 
 @login_required
 def cart(request):
-    # Get current user
     user = request.user
-
-    # Get or create cart for the user
+    # Get the Cart object
     cart, created = Cart.objects.get_or_create(user=user)
 
-    # Fetch cart items along with their quantities using a raw SQL query
+    # Execute the SQL query to fetch cart items along with their quantities
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT p.name, cp.quantity, p.price, cp.product_id, p.image
@@ -132,30 +130,48 @@ def cart(request):
         """, [cart.id])
         cart_items = cursor.fetchall()
 
-    cart_products = cart.products.all()
-    print(cart_products)
-    
+        # Fetch all products associated with the cart
+        products = cart.products.all()
+
+    # Now cart_items and products contain the fetched data
+
+    # Initialize a list to hold matching products and their details
+    matching_products = []
+
+    # Iterate over cart_items and match products with their quantities
+    for cart_item in cart_items:
+        for product in products:
+            if cart_item[3] == product.id:  # Check if product IDs match
+                matching_product = {
+                    'id': product.id,
+                    'name': product.name,
+                    'quantity': cart_item[1],  # Quantity from cart_items
+                    'price': product.price,
+                    'image': product.image.url  # Assuming 'image' is a FileField/ImageField
+                }
+                matching_products.append(matching_product)
+                break  # Break the inner loop once a match is found
+
+    # Now matching_products contains dictionaries with product details
+
     # Calculate total price and total items
-    total_price = sum(item[2] * item[1] for item in cart_items)
-    total_items = sum(item[1] for item in cart_items)
+    total_price = sum(item['price'] * item['quantity'] for item in matching_products)
+    total_items = sum(item['quantity'] for item in matching_products)
 
     # Calculate total orders, delivered orders, and pending orders
-    total_orders = Order.objects.filter(user=user).count()
-    
-    # Calculate delivered and pending orders
-    delivered = Order.objects.filter(user=user, status='delivered').count()
-    pending = Order.objects.filter(user=user, status='pending').count()
+    total_orders = Order.objects.all().count()
+    delivered = Order.objects.filter(status='Delivered').count()
+    pending = Order.objects.filter(status='Pending').count()
 
-    context = {
-         'cart_items': cart_items,
+    # Render the template with the necessary context
+    return render(request, 'cart.html', {
+        'matching_products': matching_products,
         'total_price': total_price,
         'total_items': total_items,
         'total_orders': total_orders,
         'delivered': delivered,
         'pending': pending,
-    }
-
-    return render(request, 'cart.html', context)
+    })
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
